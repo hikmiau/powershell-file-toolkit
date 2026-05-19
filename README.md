@@ -74,16 +74,18 @@ Default folder:
 
 ## Structure
 
-    powershell-file-toolkit
-    â”œâ”€â”€ config
-    â”‚   â””â”€â”€ toolkit.json
-    â”œâ”€â”€ reports
-    â”‚   â””â”€â”€ .gitkeep
-    â”œâ”€â”€ scripts
-    â”‚   â”œâ”€â”€ Clean-EmptyFolders.ps1
-    â”‚   â”œâ”€â”€ Find-Duplicates.ps1
-    â”‚   â”œâ”€â”€ Organize-Folder.ps1
-    â”‚   â””â”€â”€ Scan-Folder.ps1
-    â”œâ”€â”€ toolkit.bat
-    â”œâ”€â”€ .gitignore
-    â””â”€â”€ README.md
+```text
+powershell-file-toolkit
+|-- config
+|   `-- toolkit.json
+|-- reports
+|   `-- .gitkeep
+|-- scripts
+|   |-- Clean-EmptyFolders.ps1
+|   |-- Find-Duplicates.ps1
+|   |-- Organize-Folder.ps1
+|   `-- Scan-Folder.ps1
+|-- toolkit.bat
+|-- .gitignore
+`-- README.md
+```
