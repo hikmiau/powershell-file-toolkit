@@ -44,14 +44,37 @@ if (-not (Test-Path -LiteralPath $Path)) {
 
 $duplicateFolder = Join-Path $Path $configData.duplicateFolder
 
-$files = Get-ChildItem -LiteralPath $Path -File -Recurse:$Recurse -ErrorAction SilentlyContinue |
+$allFiles = Get-ChildItem -LiteralPath $Path -File -Recurse:$Recurse -ErrorAction SilentlyContinue |
     Where-Object {
         -not $_.FullName.StartsWith($duplicateFolder, [System.StringComparison]::OrdinalIgnoreCase)
     }
 
-$hashResults = @()
+$sizeGroups = $allFiles |
+    Group-Object Length |
+    Where-Object { $_.Count -gt 1 }
 
-foreach ($file in $files) {
+if ($sizeGroups.Count -eq 0) {
+    Write-Host "No possible duplicates found." -ForegroundColor Yellow
+    return
+}
+
+$possibleFiles = @($sizeGroups | ForEach-Object { $_.Group })
+
+Write-Host "Possible duplicate files to check: $($possibleFiles.Count)" -ForegroundColor Cyan
+Write-Host "Hashing files. This may take a while for large folders..." -ForegroundColor Cyan
+
+$hashResults = @()
+$total = $possibleFiles.Count
+$current = 0
+
+foreach ($file in $possibleFiles) {
+    $current++
+
+    Write-Progress `
+        -Activity "Finding duplicates" `
+        -Status "Hashing $current of $total files" `
+        -PercentComplete (($current / $total) * 100)
+
     try {
         $hash = Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256
         $hashResults += [pscustomobject]@{
@@ -62,6 +85,8 @@ foreach ($file in $files) {
         }
     } catch {}
 }
+
+Write-Progress -Activity "Finding duplicates" -Completed
 
 $duplicateGroups = $hashResults |
     Group-Object Hash |
@@ -87,7 +112,11 @@ foreach ($group in $duplicateGroups) {
             Original = $original.Path
             Duplicate = $duplicate.Path
             To = if ($MoveDuplicates) { $destination } else { "" }
-            Mode = if ($MoveDuplicates) { if ($DryRun) { "Move preview" } else { "Moved" } } else { "Found" }
+            Mode = if ($MoveDuplicates) {
+                if ($DryRun) { "Move preview" } else { "Moved" }
+            } else {
+                "Found"
+            }
         }
 
         if ($MoveDuplicates -and -not $DryRun) {
