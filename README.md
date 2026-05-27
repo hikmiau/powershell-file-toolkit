@@ -1,4 +1,11 @@
-﻿# powershell-file-toolkit
+﻿> [!NOTE]
+> This is a legacy Windows/PowerShell project from my previous Windows setup.
+>
+> I currently use Arch Linux with dwm, Neovim, Kitty, fish, and Git as my main development environment, so this repository is no longer actively maintained.
+>
+> The project is kept public as part of my learning history and portfolio.
+
+# powershell-file-toolkit
 
 A PowerShell toolkit for organizing, scanning, cleaning, and checking files in a folder.
 
