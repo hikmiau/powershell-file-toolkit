@@ -1,7 +1,7 @@
 ﻿> [!NOTE]
 > This is a legacy Windows/PowerShell project from my previous Windows setup.
 >
-> I currently use Arch Linux with dwm, Neovim, Kitty, fish, and Git as my main development environment, so this repository is no longer actively maintained.
+> I currently use Arch Linux as my main development environment, so this repository is no longer actively maintained.
 >
 > The project is kept public as part of my learning history and portfolio.
 
